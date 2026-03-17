@@ -1,0 +1,300 @@
+/* Charity: water Brand Colors & Fonts
+
+Primary Colors:
+- Yellow:     #FFC907
+- Blue:       #2E9DF7
+
+Secondary Colors:
+- Light Blue: #8BD1CB
+- Green:      #4FCB53
+- Orange:     #FF902A
+- Red:        #F5402C
+- Dark Green: #159A48
+- Pink:       #F16061
+
+Fonts:
+- Proxima Nova
+- Avenir
+
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: rgb(119, 168, 187);
+    color: rgb(0, 51, 102);
+    font-family: Arial, sans-serif;
+}
+
+#header-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#header-logo img {
+    width: 100px;
+    height: auto;
+}
+
+#header-logo span {
+    color: rgb(8, 7, 5);
+    font-size: 22px;
+    margin-top: 1px;
+    font-family: Proxima Nova;
+}
+
+.game-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.score-panel {
+    display: flex;
+    justify-content: space-between;  /* Space between score and button */
+    align-items: center;
+    width: 700px;
+    padding: 10px;
+    background-color: #fff;
+    border: 5px solid rgb(203, 204, 209);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.timer {
+    flex: 0 1 auto;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#game-container {
+    width: 800px;
+    height: 600px;
+    background-color: #e6f7ff;
+    border: 5px solid rgb(203, 204, 209);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+
+#start-btn {
+    padding: 8px 16px;
+    background-color: rgb(255, 201, 7);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#start-btn:hover {
+    background-color: rgb(255, 201, 7);
+}
+
+.score, .bad-score {
+    flex: 0 1 auto;  /* Don't grow, can shrink, auto basis */
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.bad-score {
+    margin-left: 0px; /* space between counters */
+}
+
+.water-drop {
+    position: absolute;
+    width: 100px;  /* increased from 40px */
+    height: 80px; /* increased from 40px */
+    border-radius: 80%;
+    animation: dropFall linear forwards;
+    transform-origin: center;
+    cursor: pointer;
+    padding: 15px;  /* Add padding for larger click area */
+    margin: -15px;  /* Offset padding to maintain visual size */
+    transition: transform 0.1s ease;  /* Smooth hover effect */
+    object-fit: contain;
+}
+
+.water-drop:hover {
+    transform: scale(1.5);  /* Slight grow effect on hover */
+}
+
+.bad-drop {
+    /* no background color; image provides appearance */
+}
+
+#loss-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#loss-restart-btn {
+    padding: 12px 24px;
+    background-color: rgb(255, 201, 7);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#loss-restart-btn:hover {
+    background-color: rgb(255, 201, 7);
+}
+
+.game-title {
+    color: rgb(0, 51, 102);
+    font-size: 48px;
+    margin-top: 0;
+    margin-bottom: 5px;  /* reduced from 20px */
+    text-align: center;
+}
+
+.game-tagline {
+    color: rgb(0, 51, 102);
+    font-size: 18px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+@keyframes dropFall {
+    from {
+        transform: translateY(-20px);
+    }
+    to {
+        transform: translateY(600px);
+    }
+}
+
+#game-over-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: rgb(119, 168, 187);
+    border-radius: 8px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.modal-message {
+    color: rgb(0, 51, 102);
+    font-size: 28px;
+    margin-bottom: 30px;
+}
+
+#restart-btn {
+    padding: 12px 24px;
+    background-color: rgb(255, 201, 7);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#restart-btn:hover {
+    background-color: rgb(255, 201, 7);
+}
+
+#victory-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#victory-restart-btn {
+    padding: 12px 24px;
+    background-color: rgb(255, 201, 7);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#victory-restart-btn:hover {
+    background-color: rgb(255, 201, 7);
+}
+
+.modal-message a {
+    color: rgb(255, 201, 7);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.modal-message a:hover {
+    text-decoration: underline;
+}
+
+#countdown-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+#countdown-text {
+    font-size: 120px;
+    font-weight: bold;
+    color: rgb(255, 201, 7);
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+@media (max-width: 850px) {
+    .game-wrapper, .score-panel, #game-container {
+        width: 95vw;
+    }
+    
+    #game-container {
+        height: 70vh;
+    }
+}

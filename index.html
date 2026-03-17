@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Drop Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-wrapper">
+        <div id="header-logo">
+            <img src="img/water-can-transparent.png" alt="water can logo">
+            <span>charity: water</span>
+        </div>
+        <h1 class="game-title">Save The Drops!</h1>
+        <p class="game-tagline">Catch good drops! Avoid bad ones!</p>
+        <div class="score-panel">
+            <div class="score">Score: <span id="score">0/50</span></div>
+            <div class="bad-score">Bad: <span id="bad-score">0/3</span></div>
+            <div class="timer">Time: <span id="time">50</span>s</div>
+            <button id="start-btn">Start Game</button>
+        </div>
+        
+        <div id="game-container">
+        </div>
+        
+        <div id="countdown-overlay">
+            <div id="countdown-text"></div>
+        </div>
+        
+        <div id="game-over-modal">
+            <div class="modal-content">
+                <p class="modal-message">Aw! You almost had it! Try again!</p>
+                <button id="restart-btn">Restart</button>
+            </div>
+        </div>
+        
+        <div id="loss-modal">
+            <div class="modal-content">
+                <p class="modal-message">Close! Try again!</p>
+                <button id="loss-restart-btn">Restart</button>
+            </div>
+        </div>
+        
+        <div id="victory-modal">
+            <div class="modal-content">
+                <p class="modal-message">Congratulations! You've caught 50 drops. Help bring millions more <a href="https://www.charitywater.org/about" target="_blank">here</a>.</p>
+                <button id="victory-restart-btn">Restart</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
