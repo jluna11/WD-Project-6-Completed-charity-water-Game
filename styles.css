@@ -31,7 +31,7 @@ body {
     min-height: 100vh;
     background-color: rgb(119, 168, 187);
     color: rgb(0, 51, 102);
-    font-family: Arial, sans-serif;
+    font-family: Avenir, Arial, sans-serif;
 }
 
 #header-logo {
@@ -52,6 +52,14 @@ body {
     font-size: 22px;
     margin-top: 1px;
     font-family: Proxima Nova;
+}
+
+.footer-logo-text {
+    color: rgb(8, 7, 5);
+    font-size: 20px;
+    font-family: Proxima Nova;
+    font-weight: normal;
+    margin-right: 4px;
 }
 
 .game-wrapper {
@@ -89,6 +97,22 @@ body {
     overflow: hidden;
 }
 
+.milestone-toast {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 51, 102, 0.9);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 8px 16px;
+    z-index: 200;
+    display: none;
+    pointer-events: none;
+    white-space: nowrap;
+}
 
 #start-btn {
     padding: 8px 16px;
@@ -102,6 +126,49 @@ body {
 
 #start-btn:hover {
     background-color: rgb(255, 201, 7);
+}
+
+.difficulty-panel {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.difficulty-btn {
+    background-color: #d8d8d8;
+    color: #123b5c;
+    border: 2px solid #999;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-weight: bold;
+    font-family: Avenir, Arial, sans-serif;
+    cursor: pointer;
+    min-width: 124px;
+}
+
+.difficulty-btn.selected {
+    border-color: #333;
+    box-shadow: 0 0 0 2px rgba(255, 201, 7, 0.5);
+    background-color: #fff;
+}
+
+.difficulty-btn.easy {
+    background-color: #4fcb53;
+    color: #fff;
+    border-color: #3ea947;
+}
+
+.difficulty-btn.medium {
+    background-color: #d19f07;
+    color: #fff;
+    border-color: #a97f04;
+}
+
+.difficulty-btn.hard {
+    background-color: #f16061;
+    color: #fff;
+    border-color: #d43c3f;
 }
 
 .score, .bad-score {
@@ -134,6 +201,7 @@ body {
 
 .bad-drop {
     /* no background color; image provides appearance */
+    opacity: 0.95;
 }
 
 #loss-modal {
@@ -285,7 +353,7 @@ body {
     font-size: 120px;
     font-weight: bold;
     color: rgb(255, 201, 7);
-    font-family: Arial, sans-serif;
+    font-family: Avenir, Arial, sans-serif;
     text-align: center;
 }
 
@@ -298,3 +366,39 @@ body {
         height: 70vh;
     }
 }
+
+.game-footer {
+    width: 100%;
+    background-color: rgb(119, 168, 187);
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    border-top: 4px solid rgb(255, 201, 7);
+    margin-top: 10px;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: rgb(255, 201, 7);
+    text-decoration: none;
+    font-weight: bold;
+    background: white;
+    color: rgb(8, 48, 89);
+    border: 2px solid rgb(255, 201, 7);
+    border-radius: 20px;
+    padding: 8px 12px;
+    font-size: 18px;
+}
+
+.footer-links a:hover {
+    background: rgb(255, 201, 7);
+    color: rgb(8, 48, 89);
+}
+

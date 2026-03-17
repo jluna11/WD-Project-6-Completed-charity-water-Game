@@ -6,6 +6,50 @@ let gameTimer; // Will store our countdown timer
 let timeRemaining = 50; // Track remaining time (50 seconds)
 let score = 0; // Track current score
 let badDropsClicked = 0; // Track how many bad drops have been clicked
+let milestoneTimeout;
+
+// Audio effects
+const splashSound = new Audio('Water_Splash.mp3');
+const failSound = new Audio('Fail.mp3');
+const victorySound = new Audio('Winner.mp3');
+const lostSound = new Audio('Game_Lost.mp3');
+const goSound = new Audio('Go!.mp3');
+const buttonClickSound = new Audio('Button_Click.mp3');
+
+// Difficulty settings
+let selectedDifficulty = 'Easy';
+let maxBadDrops = 3;
+let timePerGame = 50;
+let dropSpeedMultiplier = 1;
+
+function setDifficulty(mode) {
+  selectedDifficulty = mode;
+  document.getElementById('easy-btn').classList.remove('selected');
+  document.getElementById('medium-btn').classList.remove('selected');
+  document.getElementById('hard-btn').classList.remove('selected');
+  const btn = document.getElementById(mode.toLowerCase() + '-btn');
+  btn.classList.add('selected');
+
+  if (mode === 'Easy') {
+    maxBadDrops = 3;
+    timePerGame = 50;
+    dropSpeedMultiplier = 1;
+  } else if (mode === 'Medium') {
+    maxBadDrops = 2;
+    timePerGame = 45;
+    dropSpeedMultiplier = 1.3;
+  } else if (mode === 'Hard') {
+    maxBadDrops = 1;
+    timePerGame = 40;
+    dropSpeedMultiplier = 1.7;
+  }
+}
+
+// set default difficulty and button wiring
+setDifficulty('Easy');
+document.getElementById('easy-btn').addEventListener('click', () => { buttonClickSound.currentTime = 0; buttonClickSound.play(); setDifficulty('Easy'); });
+document.getElementById('medium-btn').addEventListener('click', () => { buttonClickSound.currentTime = 0; buttonClickSound.play(); setDifficulty('Medium'); });
+document.getElementById('hard-btn').addEventListener('click', () => { buttonClickSound.currentTime = 0; buttonClickSound.play(); setDifficulty('Hard'); });
 
 // Wait for button click to start the game
 document.getElementById("start-btn").addEventListener("click", startGame);
@@ -14,17 +58,21 @@ document.getElementById("loss-restart-btn").addEventListener("click", restartGam
 document.getElementById("victory-restart-btn").addEventListener("click", restartGame);
 
 function startGame() {
+  // Play click sound when pressing start
+  buttonClickSound.currentTime = 0;
+  buttonClickSound.play();
+
   // Prevent multiple games from running at once
   if (gameRunning) return;
 
   gameRunning = true;
-  timeRemaining = 50;
+  timeRemaining = timePerGame;
   score = 0;
   badDropsClicked = 0;
   
   // Update score display
   document.getElementById("score").textContent = score + "/50";
-  document.getElementById("bad-score").textContent = badDropsClicked + "/3";
+  document.getElementById("bad-score").textContent = badDropsClicked + "/" + maxBadDrops;
   document.getElementById("time").textContent = timeRemaining;
   
   // Hide the modals if visible
@@ -56,6 +104,8 @@ function showCountdown() {
       countdownText.textContent = count;
     } else {
       countdownText.textContent = "Go!";
+      goSound.currentTime = 0;
+      goSound.play();
       setTimeout(() => {
         countdownOverlay.style.display = "none";
         isCountdownRunning = false;
@@ -69,13 +119,24 @@ function showCountdown() {
   }, 1000);
 }
 
+function showMilestoneMessage(message) {
+  const toast = document.getElementById("milestone-toast");
+  clearTimeout(milestoneTimeout);
+  toast.textContent = message;
+  toast.style.display = "block";
+  milestoneTimeout = setTimeout(() => {
+    toast.style.display = "none";
+  }, 2000);
+}
+
 function getDropSpawnInterval() {
   // Spawn rate increases as score approaches 50
   // At score 0: 1000ms, At score 50: 300ms
   const baseInterval = 1000;
   const minInterval = 300;
   const speedup = (baseInterval - minInterval) * (score / 50);
-  return Math.max(minInterval, baseInterval - speedup);
+  const interval = Math.max(minInterval, baseInterval - speedup);
+  return Math.max(120, interval / dropSpeedMultiplier);
 }
 
 function getBadDropProbability() {
@@ -124,6 +185,10 @@ function endGameVictory() {
   const drops = document.querySelectorAll(".water-drop");
   drops.forEach(drop => drop.remove());
   
+  // Play victory sound once
+  victorySound.currentTime = 0;
+  victorySound.play();
+
   // Show victory modal
   document.getElementById("victory-modal").style.display = "flex";
   document.getElementById("start-btn").style.display = "block";
@@ -170,10 +235,11 @@ function createGoodDrop() {
   drop.alt = "water drop";
 
   // Make drops different sizes for visual variety
-  const initialSize = 60;
-  const sizeMultiplier = Math.random() * 0.8 + 0.5;
+  const initialSize = 88;
+  const sizeMultiplier = Math.random() * 0.7 + 0.7;
   const size = initialSize * sizeMultiplier;
   drop.style.width = drop.style.height = `${size}px`;
+  drop.style.padding = '4px';
 
   // Position the drop randomly across the game width
   // Subtract 60 pixels to keep drops fully inside the container
@@ -181,8 +247,8 @@ function createGoodDrop() {
   const xPosition = Math.random() * (gameWidth - 60);
   drop.style.left = xPosition + "px";
 
-  // Make drops fall for 3 seconds (faster)
-  drop.style.animationDuration = "3s";
+  // Make drops fall for 3 seconds (faster based on difficulty)
+  drop.style.animationDuration = (3 / dropSpeedMultiplier).toFixed(2) + "s";
 
   // Add the new drop to the game screen
   document.getElementById("game-container").appendChild(drop);
@@ -190,9 +256,20 @@ function createGoodDrop() {
   // Add click handler to score points
   drop.addEventListener("click", () => {
     score++;
+    splashSound.currentTime = 0;
+    splashSound.play();
     document.getElementById("score").textContent = score + "/50";
     drop.remove();
     
+    // Show milestone messages for 10, 25, and 40
+    if (score === 10) {
+      showMilestoneMessage("10 so far! Keep going!");
+    } else if (score === 25) {
+      showMilestoneMessage("25! Halfway there!");
+    } else if (score === 40) {
+      showMilestoneMessage("40/50! Ten more!");
+    }
+
     // Check if player has reached 50 points
     if (score >= 50) {
       endGameVictory();
@@ -213,18 +290,19 @@ function createBadDrop() {
   drop.alt = "bad water drop";
 
   // Make drops different sizes for visual variety
-  const initialSize = 60;
-  const sizeMultiplier = Math.random() * 0.8 + 0.5;
+  const initialSize = 88;
+  const sizeMultiplier = Math.random() * 0.7 + 0.7;
   const size = initialSize * sizeMultiplier;
   drop.style.width = drop.style.height = `${size}px`;
+  drop.style.padding = '4px';
 
   // Position the drop randomly across the game width
   const gameWidth = document.getElementById("game-container").offsetWidth;
   const xPosition = Math.random() * (gameWidth - 60);
   drop.style.left = xPosition + "px";
 
-  // Make drops fall for 3 seconds (faster)
-  drop.style.animationDuration = "3s";
+  // Make drops fall for 3 seconds (faster based on difficulty)
+  drop.style.animationDuration = (3 / dropSpeedMultiplier).toFixed(2) + "s";
 
   // Add the new drop to the game screen
   document.getElementById("game-container").appendChild(drop);
@@ -232,11 +310,15 @@ function createBadDrop() {
   // Add click handler for bad drops - lose game on 3rd click
   drop.addEventListener("click", () => {
     badDropsClicked++;
-    document.getElementById("bad-score").textContent = badDropsClicked + "/3";
+    failSound.currentTime = 0;
+    failSound.play();
+    document.getElementById("bad-score").textContent = badDropsClicked + "/" + maxBadDrops;
     drop.remove();
     
-    // Check if player has clicked 3 bad drops
-    if (badDropsClicked >= 3) {
+    // Check if player has reached max bad drops
+    if (badDropsClicked >= maxBadDrops) {
+      lostSound.currentTime = 0;
+      lostSound.play();
       endGameLoss();
     }
   });

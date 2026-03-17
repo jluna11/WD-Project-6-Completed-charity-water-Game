@@ -16,10 +16,16 @@
         <p class="game-tagline">Catch good drops! Avoid bad ones!</p>
         <div class="score-panel">
             <div class="score">Score: <span id="score">0/50</span></div>
-            <div class="bad-score">Bad: <span id="bad-score">0/3</span></div>
+            <div class="bad-score">Bad Droplets: <span id="bad-score">0/3</span></div>
             <div class="timer">Time: <span id="time">50</span>s</div>
             <button id="start-btn">Start Game</button>
         </div>
+        <div class="difficulty-panel">
+            <button id="easy-btn" class="difficulty-btn easy selected">Easy</button>
+            <button id="medium-btn" class="difficulty-btn medium">Medium</button>
+            <button id="hard-btn" class="difficulty-btn hard">Hard</button>
+        </div>
+        <div id="milestone-toast" class="milestone-toast"></div>
         
         <div id="game-container">
         </div>
@@ -48,6 +54,12 @@
                 <button id="victory-restart-btn">Restart</button>
             </div>
         </div>
+        <footer class="game-footer">
+            <div class="footer-links">
+                <a href="https://www.charitywater.org/main" target="_blank"><span class="footer-logo-text">charity: water</span> website</a>
+                <a href="https://www.charitywater.org/take-action" target="_blank">Donate here</a>
+            </div>
+        </footer>
     </div>
     
     <script src="script.js"></script>
